@@ -4,18 +4,25 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from typing import List
 import pickle
 import os
-from . import schemas, database, models, auth
+import schemas
+import database
+import auth
+import models
 from sqlalchemy.orm import Session
 from datetime import timedelta
 
 app = FastAPI()
 
 # Load ML model
-model_path = os.path.join(os.path.dirname(__file__), "models", "final_model.pkl")
+model_path = os.path.join(os.path.dirname(__file__), "final_model.pkl")
 with open(model_path, 'rb') as f:
     model = pickle.load(f)
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+
+@app.get("/")
+def home():
+    return {"message": "Welcome to Maize Yield Prediction API"}
 
 @app.post("/signup/", response_model=schemas.User)
 def signup(user: schemas.UserCreate, db: Session = Depends(database.get_db)):
