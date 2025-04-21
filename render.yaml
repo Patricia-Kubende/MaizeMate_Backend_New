@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: maize-backend
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port 10000
+    envVars:
+      - key: DATABASE_URL
+        value: sqlite:///./instance/app.db
+      - key: SECRET_KEY
+        value: F78rQZUKox3h9O35jsCes8fu4EsaZyUEmXQu6rbRj8E
